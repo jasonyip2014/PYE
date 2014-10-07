@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Cleargo_Paperreceipt>
+            <version>0.1.0</version>
+        </Cleargo_Paperreceipt>
+    </modules>
+    <global>
+        <models>
+            <cleargo_paperreceipt>
+                <class>Cleargo_Paperreceipt_Model</class>
+            </cleargo_paperreceipt>
+
+            <sales>
+                <rewrite>
+                    <order>Cleargo_Paperreceipt_Model_Order</order>
+                </rewrite>
+            </sales>
+        </models>
+
+        <resources>
+            <paperreceipt_setup>
+                <setup>
+                    <module>Cleargo_Paperreceipt</module>
+                    <class>Mage_Sales_Model_Mysql4_Setup</class>
+                </setup>
+            </paperreceipt_setup>
+        </resources>
+
+        <fieldsets>
+            <sales_convert_quote>
+                <paper_receipt><to_order>*</to_order></paper_receipt>
+            </sales_convert_quote>
+
+            <sales_convert_order>
+                <paper_receipt><to_quote>*</to_quote></paper_receipt>
+            </sales_convert_order>
+        </fieldsets>
+
+        <events>
+            <controller_action_predispatch_checkout_onepage_saveBilling>
+                <observers>
+                    <cleargo_paperreceipt_observer>
+                        <type>singleton</type>
+                        <class>Cleargo_Paperreceipt_Model_Observer</class>
+                        <method>saveTempCustomData</method>
+                    </cleargo_paperreceipt_observer>
+                </observers>
+            </controller_action_predispatch_checkout_onepage_saveBilling>
+
+            <checkout_type_onepage_save_order>
+                <observers>
+                    <cleargo_paperreceipt_observer>
+                        <type>singleton</type>
+                        <class>Cleargo_Paperreceipt_Model_Observer</class>
+                        <method>saveCustomData</method>
+                    </cleargo_paperreceipt_observer>
+                </observers>
+            </checkout_type_onepage_save_order>
+        </events>
+    </global>
+</config>
